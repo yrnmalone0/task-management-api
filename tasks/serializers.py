@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from . models import Task
 
 
 #Serializer for user registration
@@ -44,3 +45,24 @@ class UpdateUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ["bio", "profile_picture", "created_at", "updated_at"]
+
+
+
+#Serrializer for Task Model
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = [
+            "id", 
+            "title", 
+            "description", 
+            "due_date", 
+            "priority_level", 
+            "status", 
+            "creator", 
+            "completed", 
+            "completed_at", 
+            "created_at", 
+            "updated_at"
+        ]
+        read_only_fields = ["creator", "created_at", "updated_at", "completed_at"]
