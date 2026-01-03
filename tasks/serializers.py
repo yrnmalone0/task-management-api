@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
 
+#Serializer for user registration
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -28,3 +29,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         new_user.set_password(password) #hash password properly
         return new_user
 
+
+#Serializer for user profile update
+class UpdateUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["bio", "profile_picture", "created_at", "updated_at"]

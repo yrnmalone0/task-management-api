@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from . serializers import UserRegistrationSerializer
+from . serializers import UserRegistrationSerializer, UpdateUserProfileSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 
 #register users
@@ -14,4 +14,16 @@ def register_user(request):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+
+#update user profile
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user_profile(request):
+    user = request.user  #get the currently logged-in user
+    serializer = UpdateUserProfileSerializer(user, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)

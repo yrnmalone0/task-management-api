@@ -8,7 +8,6 @@ class CustomUser(AbstractUser):
     """Extended User Model"""
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to="profile_img", blank=True, null=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True) #set field to current date/time when the object is first created
     updated_at = models.DateTimeField(auto_now=True) #update automatically on every .save()
 
