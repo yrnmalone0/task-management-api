@@ -56,8 +56,16 @@ def task_list(request):
     return Response(serializer.data)
 
 
-#view task details
-# @api_view(['GET'])
-# def task_details(request, pk):
-#     task_detail = Task.objects.get(id=pk)
-#     serializer = TaskSerializer
+#view task details or single task
+@api_view(['GET'])
+def task_detail(request, pk):
+    try:
+        task = Task.objects.get(pk=pk)
+    except Task.DoesNotExist:
+        return Response(
+            {"error": "Task not found."},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    serializer = TaskSerializer(task)
+    return Response(serializer.data)
