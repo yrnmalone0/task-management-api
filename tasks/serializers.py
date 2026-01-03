@@ -11,6 +11,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'password': {'write_only':True}
         } #never returns password in API responses
 
+    #validate email uniqueness
+    def validate_email(self, value):
+        user = get_user_model()
+        if user.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+    
+    #create new user
     def create(self, validated_data):
         email = validated_data["email"]
         username = validated_data["username"]
@@ -27,6 +35,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         )
 
         new_user.set_password(password) #hash password properly
+        new_user.save() #save user to database
         return new_user
 
 
