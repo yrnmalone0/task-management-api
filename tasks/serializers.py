@@ -48,8 +48,17 @@ class UpdateUserProfileSerializer(serializers.ModelSerializer):
 
 
 
+#Serializer for Creator/User object(id, username, first and last name)
+class CreatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["id", "username", "first_name", "last_name"]
+
+
+
 #Serrializer for Task Model
 class TaskSerializer(serializers.ModelSerializer):
+    creator = CreatorSerializer(read_only=True) #nested serializer to show creator details
     class Meta:
         model = Task
         fields = [
@@ -66,3 +75,5 @@ class TaskSerializer(serializers.ModelSerializer):
             "updated_at"
         ]
         read_only_fields = ["creator", "created_at", "updated_at", "completed_at"]
+
+
