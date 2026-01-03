@@ -31,7 +31,7 @@ def update_user_profile(request):
 
 #create a task
 @api_view(['POST'])
-
+@permission_classes([IsAuthenticated])
 def create_task(request):
     user = request.user #get currently logged user
     serializer = TaskSerializer(data=request.data) #pass content or payload to serializer
