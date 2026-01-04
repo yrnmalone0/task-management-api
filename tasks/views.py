@@ -69,3 +69,46 @@ def task_detail(request, pk):
 
     serializer = TaskSerializer(task)
     return Response(serializer.data)
+
+
+
+#update a task (only edited by authenticated users/creators of that task)
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_task(request, pk):
+    user = request.user
+    task = Task.objects.get(id=pk)
+    if task.creator != user:
+        return Response(
+            {"message": "You're not the creator of this task."},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    serializer = TaskSerializer(task, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {
+                "message": "Task updated successfully!",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+    return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+
+#Delete a task (only authenticated users can delete a task the created)
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def delete_task(request, pk):
+#     user = request.user
+#     task = Task.objects.get(id=pk)
+#     if task.creator != user:
+#         return Response(
+#             {"error": "You're not the creator of this task and not authorized to delete"},
+#             status=status.HTTP_401_UNAUTHORIZED
+#         )
+#     task.delete()
+#     return Response(
+#         {"message": "Task deleted successfully"},
+#         status=status.HTTP_204_NO_CONTENT
+#     )
