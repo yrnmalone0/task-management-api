@@ -6,7 +6,44 @@ This is a Django-based Task Management API that allows users to register, manage
 - User Registration: API endpoint for new users to register.
 - Profile Management: API endpoint for users to update their profile information.
 - Media Handling: Support for uploading and serving profile pictures.
+- Task Management: Create, view, update, and delete tasks with user authentication.
 
 ## Technologies Used
 - Django
 - Django REST Framework
+- SQLite (default database, can be changed)
+- JWT Authentication
+- Pillow (for image handling)
+
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone
+
+    cd task-management-api
+    ```
+2. Create a virtual environment and activate it:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```  
+3. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Apply migrations:
+   ```bash
+   python manage.py migrate
+   ```
+5. Run the development server:
+   ```bash
+   python manage.py runserver
+   ```
+
+
+
+
+
+
+
+
