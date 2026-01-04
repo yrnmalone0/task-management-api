@@ -7,6 +7,9 @@ This is a Django-based Task Management API that allows users to register, manage
 - Profile Management: API endpoint for users to update their profile information.
 - Media Handling: Support for uploading and serving profile pictures.
 - Task Management: Create, view, update, and delete tasks with user authentication.
+- JWT Authentication: Secure API endpoints using JSON Web Tokens.
+- Task Completion: Mark tasks as completed or pending.
+
 
 ## Technologies Used
 - Django
