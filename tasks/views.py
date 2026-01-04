@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Task
 from django.utils import timezone
+from django.db.models import Case, When, IntegerField, Q
+from datetime import datetime
 
 
 #register users
@@ -52,8 +54,63 @@ def create_task(request):
 #view tasks
 @api_view(['GET'])
 def task_list(request):
-    tasks = Task.objects.all()
-    serializer = TaskSerializer(tasks, many=True)
+    qs = Task.objects.all()
+
+    # Filters
+    status = request.query_params.get('status')
+    priority = request.query_params.get('priority')
+    due_on = request.query_params.get('due_on')
+    due_before = request.query_params.get('due_before')
+    due_after = request.query_params.get('due_after')
+
+    if status:
+        status_val = status.title()
+        qs = qs.filter(status__iexact=status_val)
+
+    if priority:
+        qs = qs.filter(priority_level__iexact=priority)
+
+
+    # due_on / due_before / due_after expect YYYY-MM-DD
+    try:
+        if due_on:
+            d = datetime.fromisoformat(due_on).date()
+            qs = qs.filter(due_date__date=d)
+        if due_before:
+            d = datetime.fromisoformat(due_before).date()
+            qs = qs.filter(due_date__date__lte=d)
+        if due_after:
+            d = datetime.fromisoformat(due_after).date()
+            qs = qs.filter(due_date__date__gte=d)
+    except ValueError:
+        return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Sorting
+    sort_by = request.query_params.get('sort_by')  # 'due_date' or 'priority'
+    order = request.query_params.get('order', 'asc').lower()  # 'asc' or 'desc'
+
+    if sort_by == 'priority':
+        qs = qs.annotate(
+            priority_rank=Case(
+                When(priority_level='Low', then=1),
+                When(priority_level='Medium', then=2),
+                When(priority_level='High', then=3),
+                output_field=IntegerField(),
+            )
+        )
+        sort_field = 'priority_rank'
+    elif sort_by == 'due_date':
+        sort_field = 'due_date'
+    else:
+        sort_field = None
+
+    if sort_field:
+        if order == 'desc':
+            qs = qs.order_by(f'-{sort_field}')
+        else:
+            qs = qs.order_by(sort_field)
+
+    serializer = TaskSerializer(qs, many=True)
     return Response(serializer.data)
 
 
