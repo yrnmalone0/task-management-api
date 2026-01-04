@@ -15,10 +15,10 @@ This is a Django-based Task Management API that allows users to register, manage
 
 ### User Endpoints
 1. **Register User**
-    - *POST* /api/register_user/
+    - **POST** /api/register_user/
 
-      *Request Body:*
-      ```json
+        **Request Body (Payload):**
+        ```json
         {
             "username": "johndoe",
             "password": "securepassword",
@@ -28,7 +28,7 @@ This is a Django-based Task Management API that allows users to register, manage
         }
         ``` 
 
-        *Response:*
+        **Response:**
         ```json
         {
             "id": 1,
@@ -38,19 +38,19 @@ This is a Django-based Task Management API that allows users to register, manage
             "profile_picture": "image_file"
         }
         ```
-       
-2. *Update Profile* 
-    - *PUT* /api/update_profile/
 
-      *Request Body:*
+2. **Update Profile**
+    - **PUT** /api/update_profile/
+
+        **Request Body (Payload):**
         ```json
         {
             "bio": "Updated bio",
             "profile_picture": "new_image_file"
         }
         ```
-      *Response:*
 
+        **Response:**
         ```json
         {
             "id": 1,
@@ -62,9 +62,10 @@ This is a Django-based Task Management API that allows users to register, manage
         ``` 
 
 ### Task Endpoints
-1. *Create Task*
-    - *POST* /api/tasks/
-      *Request Body:*
+1. **Create Task**
+    - **POST** /api/create_tasks/
+
+        **Request Body (Payload):**
         ```json
         {
             "title": "New Task",
@@ -73,7 +74,8 @@ This is a Django-based Task Management API that allows users to register, manage
             "priority_level": "High"
         }
         ```
-      *Response:*
+
+        **Response:**
         ```json
         {
             "id": 1,
@@ -84,23 +86,41 @@ This is a Django-based Task Management API that allows users to register, manage
             "is_completed": false
         }
         ``` 
-2. *List Tasks*
-    - *GET* /api/tasks/
-      *Response:*
+
+2. ***List Tasks**
+    - **GET** /api/tasks/
+
+        **Response:**
         ```json
-            {
-                "id": 1,
-                "title": "New Task",
-                "description": "Task description",
-                "due_date": "2024-12-31",
-                "priority_level": "High",
-                "is_completed": false
-            },
-        
+        {
+            "id": 1,
+            "title": "New Task",
+            "description": "Task description",
+            "due_date": "2024-12-31",
+            "priority_level": "High",
+            "is_completed": false
+        }
         ``` 
-3. *Update Task*
-    - *PUT* /api/tasks/{id}/
-      *Request Body:*
+
+3. ***List Single Task / Get Task Details**
+    - **GET** /api/task/{id}/
+
+        **Response:**
+        ```json
+        {
+            "id": 1,
+            "title": "New Task",
+            "description": "Task description",
+            "due_date": "2024-12-31",
+            "priority_level": "High",
+            "is_completed": false
+        }
+        ``` 
+
+4. **Update Task**
+    - **PUT** /api/update_task/{id}/
+
+        **Request Body (Payload):**
         ```json
         {
             "title": "Updated Task",
@@ -110,7 +130,8 @@ This is a Django-based Task Management API that allows users to register, manage
             "is_completed": true
         }
         ```
-      *Response:*
+
+        **Response:**
         ```json
         {
             "id": 1,
@@ -121,14 +142,44 @@ This is a Django-based Task Management API that allows users to register, manage
             "is_completed": true
         }
         ```
-4. *Delete Task*
-    - *POST* /api/tasks/{id}/delete/
-      *Response:*
+
+5. **Delete Task**
+    - **POST** /api/delete_task/{id}/
+
+        **Response:**
         ```json
         {
-            "detail": "Task deleted successfully."
+            "message": "Task deleted successfully."
         }
         ``` 
+
+6. **Mark Task as Completed**
+    - **POST** /api/mark_task/{id}/
+
+        **Response:**
+        ```json
+            {
+                "message": "Task completion status updated",
+                "data": {
+                    "id": 1,
+                    "title": "Complete DRF authentication module",
+                    "description": "Implement JWT authentication and user profile update endpoints for the task management API.",
+                    "due_date": "2026-01-10T00:00:00Z",
+                    "priority_level": "High",
+                    "status": "Completed",
+                    "creator": {
+                        "id": 1,
+                        "username": "eD",
+                        "first_name": "",
+                        "last_name": ""
+                    },
+                    "completed": true,
+                    "completed_at": "2026-01-04T03:29:07.866618Z",
+                    "created_at": "2026-01-03T17:22:02.193796Z",
+                    "updated_at": "2026-01-04T03:29:07.867617Z"
+                }
+            }
+        ```
 
 ## Technologies Used
 - Django
