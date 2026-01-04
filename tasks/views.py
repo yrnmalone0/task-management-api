@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Task
+from django.utils import timezone
 
 
 #register users
@@ -78,6 +79,11 @@ def task_detail(request, pk):
 def update_task(request, pk):
     user = request.user
     task = Task.objects.get(id=pk)
+    if task.completed:
+        return Response(
+            {"error": "Task is completed and cannot be edited. Revert to incomplete to edit."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
     if task.creator != user:
         return Response(
             {"message": "You're not the creator of this task."},
@@ -111,4 +117,55 @@ def delete_task(request, pk):
     return Response(
         {"message": "Task deleted successfully"},
         status=status.HTTP_204_NO_CONTENT
+    )
+
+
+# Mark a task complete or incomplete (only creator can change)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_task_complete(request, pk):
+    user = request.user
+    try:
+        task = Task.objects.get(id=pk)
+    except Task.DoesNotExist:
+        return Response({"error": "Task not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    if task.creator != user:
+        return Response(
+            {"error": "You're not the creator of this task and not authorized to change its completion status"},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+
+    # Accept explicit 'completed' boolean in payload, or toggle if omitted
+    completed = request.data.get('completed', None)
+    if completed is None:
+        # toggle
+        if not task.completed:
+            task.completed = True
+            task.completed_at = timezone.now()
+            task.status = 'Completed'
+        else:
+            task.completed = False
+            task.completed_at = None
+            task.status = 'Pending'
+    else:
+        # coerce to boolean for common string/number forms
+        if isinstance(completed, str):
+            completed_val = completed.lower() in ['true', '1', 'yes']
+        else:
+            completed_val = bool(completed)
+
+        if completed_val:
+            task.completed = True
+            task.completed_at = timezone.now()
+            task.status = 'Completed'
+        else:
+            task.completed = False
+            task.completed_at = None
+            task.status = 'Pending'
+
+    task.save()
+    serializer = TaskSerializer(task)
+    return Response(
+        {"message": "Task completion status updated", "data": serializer.data}, status=status.HTTP_200_OK
     )

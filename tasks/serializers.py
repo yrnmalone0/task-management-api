@@ -76,4 +76,12 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["creator", "created_at", "updated_at", "completed_at"]
 
+    def update(self, instance, validated_data):
+        # Prevent editing a task that has been marked complete.
+        if instance.completed:
+            raise serializers.ValidationError({
+                "detail": "Task is completed and cannot be edited. Revert to incomplete to make changes."
+            })
+        return super().update(instance, validated_data)
+
 
