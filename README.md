@@ -1,16 +1,6 @@
 # Task Management API
 This is a Django-based Task Management API that allows users to register, manage their profiles, and handle tasks efficiently. The project includes custom user models, RESTful API endpoints, and media handling for profile pictures.
 
-# Reflections
-This project was an exciting opportunity to deepen my understanding of Django and Django REST Framework. Implementing a custom user model allowed me to explore the flexibility of Django's authentication system. I learned how to handle media files effectively, which is crucial for user profile management. The task management features provided a practical way to apply CRUD operations and filtering techniques in a real-world scenario. Overall, this project enhanced my skills in building robust APIs and managing user data securely.
-
-# What you have accomplished so far?
-- Set up a Django project with a custom user model.
-- Created API endpoints for user registration and profile management.
-- Implemented media handling for profile pictures.
-- Developed task management features including creation, updating, deletion, and filtering of tasks.
-
-
 ## Features
 - Custom User Model: Extended Django's default user model to include additional fields like bio and profile picture.
 - User Registration: API endpoint for new users to register.
