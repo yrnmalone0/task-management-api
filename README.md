@@ -87,7 +87,7 @@ This is a Django-based Task Management API that allows users to register, manage
         }
         ``` 
 
-2. ***List Tasks**
+2. **List Tasks**
     - **GET** /api/tasks/
 
         **Response:**
@@ -102,7 +102,7 @@ This is a Django-based Task Management API that allows users to register, manage
         }
         ``` 
 
-3. ***List Single Task / Get Task Details**
+3. **List Single Task / Get Task Details**
     - **GET** /api/task/{id}/
 
         **Response:**
