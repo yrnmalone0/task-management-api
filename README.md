@@ -16,8 +16,9 @@ This is a Django-based Task Management API that allows users to register, manage
 ### User Endpoints
 1. *Register User*
     - *POST* /api/register_user/
+
       *Request Body:*
-        ```json
+      ```json
         {
             "username": "johndoe",
             "password": "securepassword",
@@ -37,19 +38,10 @@ This is a Django-based Task Management API that allows users to register, manage
             "profile_picture": "image_file"
         }
         ```
-
-        *Response:*
-        ```json
-        {
-            "id": 1,
-            "username": "johndoe",
-            "email": "johndoe@example.com",
-            "bio": "A short bio",
-            "profile_picture": "image_file"
-        }
-        ```         
+       
 2. *Update Profile* 
     - *PUT* /api/profile/
+    
       *Request Body:*
         ```json
         {
