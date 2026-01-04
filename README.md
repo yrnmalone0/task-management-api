@@ -9,6 +9,7 @@ This is a Django-based Task Management API that allows users to register, manage
 - Task Management: Create, view, update, and delete tasks with user authentication.
 - JWT Authentication: Secure API endpoints using JSON Web Tokens.
 - Task Completion: Mark tasks as completed or pending.
+- Filtering and Searching: Filter tasks by status, priority, and due dates.
 
 
 ## Technologies Used
@@ -17,6 +18,7 @@ This is a Django-based Task Management API that allows users to register, manage
 - SQLite (default database, can be changed)
 - JWT Authentication
 - Pillow (for image handling)
+
 
 ## Installation
 1. Clone the repository:
